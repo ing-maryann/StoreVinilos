@@ -1,0 +1,3322 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VinylVibes - Tienda de Vinilos</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #FFB6C1;
+            --secondary-color: #DDA0DD;
+            --accent-color: #98FB98;
+            --background-color: #ffffff;
+            --text-color: #5A5A5A;
+            --card-bg: rgba(255, 255, 255, 0.8);
+            --font-family: 'Arial', sans-serif;
+            --font-size: 16px;
+            --contrast-mode: normal;
+            --night-mode: false;
+            --grayscale-mode: false;
+        }
+
+        /* Modo de alto contraste */
+        body.high-contrast {
+            --primary-color: #000000;
+            --secondary-color: #000000;
+            --accent-color: #000000;
+            --background-color: #ffffff;
+            --text-color: #000000;
+            --card-bg: #ffffff;
+        }
+
+        /* Modo nocturno */
+        body.night-mode {
+            --primary-color: #BB86FC;
+            --secondary-color: #03DAC6;
+            --accent-color: #CF6679;
+            --background-color: #121212;
+            --text-color: #E0E0E0;
+            --card-bg: rgba(30, 30, 30, 0.8);
+        }
+
+        /* Modo escala de grises */
+        body.grayscale {
+            filter: grayscale(100%);
+        }
+
+        /* Tamaños de fuente */
+        body.font-small {
+            --font-size: 14px;
+        }
+
+        body.font-medium {
+            --font-size: 16px;
+        }
+
+        body.font-large {
+            --font-size: 18px;
+        }
+
+        body.font-xlarge {
+            --font-size: 20px;
+        }
+
+        /* Tipografías */
+        body.font-arial {
+            --font-family: 'Arial', sans-serif;
+        }
+
+        body.font-verdana {
+            --font-family: 'Verdana', sans-serif;
+        }
+
+        body.font-georgia {
+            --font-family: 'Georgia', serif;
+        }
+
+        body.font-comic {
+            --font-family: 'Comic Sans MS', cursive;
+        }
+
+        body.font-open-dyslexic {
+            --font-family: 'OpenDyslexic', sans-serif;
+        }
+
+        body {
+            font-family: var(--font-family);
+            font-size: var(--font-size);
+            background: linear-gradient(135deg, #FFE5E5 0%, #E5F3FF 25%, #F0E5FF 50%, #E5FFE5 75%, #FFF5E5 100%);
+            color: var(--text-color);
+            min-height: 100vh;
+            overflow-x: hidden;
+            animation: gradientShift 20s ease infinite;
+            position: relative;
+            background-color: var(--background-color);
+        }
+
+        /* Aplicar modo nocturno al fondo */
+        body.night-mode {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 25%, #0f3460 50%, #1a1a2e 75%, #16213e 100%);
+        }
+
+        /* Background Image Overlay - Única imagen de fondo */
+        .bg-image {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=1920&h=1080');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            opacity: 0.1;
+            z-index: -2;
+        }
+
+        /* Ajustar opacidad en modo nocturno */
+        body.night-mode .bg-image {
+            opacity: 0.05;
+        }
+
+        @keyframes gradientShift {
+
+            0%,
+            100% {
+                background: linear-gradient(135deg, #FFE5E5 0%, #E5F3FF 25%, #F0E5FF 50%, #E5FFE5 75%, #FFF5E5 100%);
+            }
+
+            25% {
+                background: linear-gradient(135deg, #E5F3FF 0%, #F0E5FF 25%, #E5FFE5 50%, #FFF5E5 75%, #FFE5E5 100%);
+            }
+
+            50% {
+                background: linear-gradient(135deg, #F0E5FF 0%, #E5FFE5 25%, #FFF5E5 50%, #FFE5E5 75%, #E5F3FF 100%);
+            }
+
+            75% {
+                background: linear-gradient(135deg, #E5FFE5 0%, #FFF5E5 25%, #FFE5E5 50%, #E5F3FF 75%, #F0E5FF 100%);
+            }
+        }
+
+        .vinyl-bg {
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 182, 193, 0.1) 0%, transparent 70%);
+            animation: rotate 60s linear infinite;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        @keyframes rotate {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Botón de Accesibilidad Flotante */
+        .accessibility-toggle-btn {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            z-index: 9999;
+            transition: all 0.3s ease;
+            border: 2px solid white;
+            animation: pulse 2s infinite;
+        }
+
+        .accessibility-toggle-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Botón de Modo Nocturno Flotante */
+        .night-mode-toggle-btn {
+            position: fixed;
+            bottom: 90px;
+            left: 20px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(45deg, #2c3e50, #34495e);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            z-index: 9999;
+            transition: all 0.3s ease;
+            border: 2px solid white;
+        }
+
+        .night-mode-toggle-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(255, 182, 193, 0.7);
+            }
+
+            70% {
+                box-shadow: 0 0 0 10px rgba(255, 182, 193, 0);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(255, 182, 193, 0);
+            }
+        }
+
+        /* Panel de Accesibilidad */
+        .accessibility-panel {
+            position: fixed;
+            bottom: 160px;
+            left: 20px;
+            width: 340px;
+            max-height: 70vh;
+            overflow-y: auto;
+            background: var(--card-bg);
+            backdrop-filter: blur(15px);
+            border: 2px solid var(--primary-color);
+            border-radius: 15px;
+            padding: 1.5rem;
+            z-index: 9998;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            transform: translateY(20px);
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .accessibility-panel.open {
+            transform: translateY(0);
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .accessibility-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--primary-color);
+        }
+
+        .accessibility-header h3 {
+            color: var(--primary-color);
+            font-size: 1.2rem;
+        }
+
+        .close-panel {
+            background: none;
+            border: none;
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .close-panel:hover {
+            transform: rotate(90deg);
+        }
+
+        .accessibility-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .accessibility-section h4 {
+            color: var(--primary-color);
+            margin-bottom: 0.8rem;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .current-setting {
+            font-size: 0.85rem;
+            color: var(--accent-color);
+            font-weight: bold;
+            margin-left: auto;
+            padding: 0.2rem 0.6rem;
+            background: rgba(152, 251, 152, 0.2);
+            border-radius: 10px;
+        }
+
+        .accessibility-btn-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .accessibility-btn {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.6rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            flex: 1;
+            min-width: 80px;
+            font-family: var(--font-family);
+        }
+
+        .accessibility-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .accessibility-btn.active {
+            background: var(--accent-color);
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(152, 251, 152, 0.5);
+        }
+
+        .reading-guide {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9997;
+            display: none;
+        }
+
+        .reading-guide.active {
+            display: block;
+        }
+
+        .reading-line {
+            position: absolute;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: red;
+            z-index: 9997;
+            pointer-events: none;
+        }
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(15px);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            border-bottom: 3px solid var(--primary-color);
+            box-shadow: 0 4px 20px rgba(255, 182, 193, 0.3);
+        }
+
+        body.night-mode .navbar {
+            background: rgba(30, 30, 30, 0.9);
+            border-bottom: 3px solid var(--primary-color);
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color), #87CEEB);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            cursor: pointer;
+            animation: logoGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes logoGlow {
+
+            0%,
+            100% {
+                filter: drop-shadow(0 0 5px var(--primary-color));
+            }
+
+            50% {
+                filter: drop-shadow(0 0 20px var(--secondary-color));
+            }
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-color);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+        }
+
+        .nav-links a:hover {
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .admin-nav-links {
+            display: none;
+            gap: 1rem;
+            list-style: none;
+        }
+
+        .admin-nav-links.show {
+            display: flex;
+        }
+
+        .admin-nav-links a {
+            color: var(--text-color);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 0.5rem 1rem;
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.5);
+            border: 2px solid var(--accent-color);
+            font-size: 0.9rem;
+        }
+
+        .admin-nav-links a:hover {
+            background: linear-gradient(45deg, var(--accent-color), #87CEEB);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .search-container {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(255, 255, 255, 0.7);
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            border: 2px solid var(--primary-color);
+            min-width: 250px;
+        }
+
+        body.night-mode .search-container {
+            background: rgba(30, 30, 30, 0.7);
+        }
+
+        .header-search {
+            border: none;
+            background: transparent;
+            outline: none;
+            flex: 1;
+            padding: 0.3rem;
+            color: var(--text-color);
+            font-family: var(--font-family);
+        }
+
+        .header-search::placeholder {
+            color: rgba(90, 90, 90, 0.6);
+        }
+
+        .voice-btn {
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            border: none;
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            cursor: pointer;
+            color: white;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .voice-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 5px 15px rgba(255, 182, 193, 0.4);
+        }
+
+        .voice-btn.recording {
+            background: linear-gradient(45deg, #FF6B6B, #FF8E8E);
+            animation: pulse 1s infinite;
+        }
+
+        .cart-icon {
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .cart-icon:hover {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: linear-gradient(45deg, var(--primary-color), #FFF5E5);
+            color: var(--text-color);
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: bold;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+
+            0%,
+            20%,
+            50%,
+            80%,
+            100% {
+                transform: translateY(0);
+            }
+
+            40% {
+                transform: translateY(-10px);
+            }
+
+            60% {
+                transform: translateY(-5px);
+            }
+        }
+
+        .profile-icon {
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: var(--text-color);
+        }
+
+        .profile-icon:hover {
+            transform: scale(1.2);
+            filter: drop-shadow(0 0 10px var(--accent-color));
+        }
+
+        .user-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .btn {
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            padding: 0.7rem 1.5rem;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(255, 182, 193, 0.4);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(45deg, var(--accent-color), #87CEEB);
+        }
+
+        .btn-secondary:hover {
+            box-shadow: 0 10px 30px rgba(152, 251, 152, 0.4);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 8rem 2rem 2rem;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* Modal styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal {
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 2rem;
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            border: 2px solid var(--primary-color);
+            transform: scale(0.7) translateY(50px);
+            transition: all 0.3s ease;
+            position: relative;
+            box-shadow: 0 20px 60px rgba(255, 182, 193, 0.3);
+        }
+
+        .modal-overlay.active .modal {
+            transform: scale(1) translateY(0);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .modal-close:hover {
+            color: #FFF5E5;
+            transform: rotate(90deg);
+        }
+
+        .modal-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .modal-form .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        /* Home Page */
+        .hero {
+            text-align: center;
+            padding: 4rem 0;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color), #87CEEB, var(--accent-color), #FFF5E5);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: textFloat 4s ease-in-out infinite;
+            position: relative;
+            z-index: 1;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        @keyframes textFloat {
+
+            0%,
+            100% {
+                transform: translateY(0px) scale(1);
+                filter: drop-shadow(0 5px 15px rgba(255, 182, 193, 0.3));
+            }
+
+            25% {
+                transform: translateY(-10px) scale(1.02);
+                filter: drop-shadow(0 15px 25px rgba(221, 160, 221, 0.4));
+            }
+
+            50% {
+                transform: translateY(-5px) scale(1.01);
+                filter: drop-shadow(0 10px 20px rgba(135, 206, 235, 0.3));
+            }
+
+            75% {
+                transform: translateY(-15px) scale(1.03);
+                filter: drop-shadow(0 20px 30px rgba(152, 251, 152, 0.4));
+            }
+        }
+
+        .hero p {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            opacity: 0.8;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            color: var(--text-color);
+        }
+
+        /* Featured Section */
+        .featured-section {
+            margin: 4rem 0;
+            text-align: center;
+        }
+
+        .featured-title {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .featured-albums {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .featured-album {
+            background: var(--card-bg);
+            backdrop-filter: blur(15px);
+            padding: 1.5rem;
+            border-radius: 20px;
+            border: 2px solid var(--primary-color);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .featured-album::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 182, 193, 0.1), transparent);
+            transform: rotate(45deg);
+            transition: all 0.6s ease;
+            opacity: 0;
+        }
+
+        .featured-album:hover::before {
+            opacity: 1;
+            transform: rotate(45deg) translate(50%, 50%);
+        }
+
+        .featured-album:hover {
+            transform: translateY(-15px) scale(1.05);
+            box-shadow: 0 25px 50px rgba(255, 182, 193, 0.3);
+        }
+
+        /* Álbum cuadrado sin animación de giro */
+        .album-cover {
+            width: 100%;
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .album-cover::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.4) 100%);
+        }
+
+        .album-info {
+            flex: 1;
+            margin-bottom: 1rem;
+        }
+
+        .album-info h3 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+        }
+
+        .album-artist {
+            opacity: 0.7;
+            margin-bottom: 0.5rem;
+            color: var(--text-color);
+        }
+
+        .album-badge {
+            background: linear-gradient(45deg, var(--accent-color), #87CEEB);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 4rem 0;
+        }
+
+        .feature-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(15px);
+            padding: 2rem;
+            border-radius: 20px;
+            border: 2px solid transparent;
+            background-image: linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0)),
+                linear-gradient(45deg, var(--primary-color), var(--secondary-color), #87CEEB);
+            background-origin: border-box;
+            background-clip: content-box, border-box;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transform: rotate(45deg);
+            transition: all 0.6s ease;
+            opacity: 0;
+            z-index: 1;
+        }
+
+        .feature-card:hover::before {
+            opacity: 1;
+            transform: rotate(45deg) translate(50%, 50%);
+            z-index: 1;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-15px) scale(1.05);
+            box-shadow: 0 25px 50px rgba(255, 182, 193, 0.3);
+        }
+
+        .feature-card h3 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .feature-card p {
+            position: relative;
+            z-index: 2;
+            color: var(--text-color);
+        }
+
+        /* Catalog */
+        .catalog-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .search-filter {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .search-input {
+            padding: 0.7rem 1.2rem;
+            border: 2px solid var(--primary-color);
+            border-radius: 25px;
+            background: var(--card-bg);
+            color: var(--text-color);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            font-family: var(--font-family);
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 20px rgba(152, 251, 152, 0.4);
+        }
+
+        .search-input::placeholder {
+            color: rgba(90, 90, 90, 0.6);
+        }
+
+        .vinyl-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .vinyl-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            border: 2px solid var(--primary-color);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .vinyl-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.6s ease;
+            z-index: 1;
+        }
+
+        .vinyl-card:hover::before {
+            left: 100%;
+        }
+
+        .vinyl-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(255, 182, 193, 0.4);
+            border-color: var(--accent-color);
+        }
+
+        .vinyl-image {
+            width: 100%;
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .vinyl-image::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.4) 100%);
+        }
+
+        .vinyl-info {
+            flex: 1;
+            margin-bottom: 1rem;
+        }
+
+        .vinyl-info h3 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .vinyl-artist {
+            opacity: 0.7;
+            margin-bottom: 0.5rem;
+            color: var(--text-color);
+        }
+
+        .vinyl-price {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--secondary-color);
+            margin-bottom: 1rem;
+            text-shadow: 0 2px 10px rgba(221, 160, 221, 0.5);
+        }
+
+        .vinyl-stock {
+            opacity: 0.6;
+            margin-bottom: 1rem;
+            color: var(--text-color);
+        }
+
+        .add-to-cart {
+            width: 100%;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            padding: 0.8rem;
+            border-radius: 15px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            font-size: 1rem;
+            margin-top: auto;
+        }
+
+        .add-to-cart::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .add-to-cart:hover::before {
+            left: 100%;
+        }
+
+        .add-to-cart:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(255, 182, 193, 0.5);
+        }
+
+        .add-to-cart:disabled {
+            background: linear-gradient(45deg, #cccccc, #999999);
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .add-to-cart:disabled:hover {
+            transform: none;
+            box-shadow: none;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid var(--primary-color);
+            border-radius: 10px;
+            background: var(--card-bg);
+            color: var(--text-color);
+            transition: all 0.3s ease;
+            resize: vertical;
+            font-family: var(--font-family);
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 15px rgba(152, 251, 152, 0.3);
+        }
+
+        .form-group input::placeholder {
+            color: rgba(90, 90, 90, 0.6);
+        }
+
+        .cart-item {
+            display: flex;
+            align-items: center;
+            background: var(--card-bg);
+            padding: 1rem;
+            border-radius: 15px;
+            margin-bottom: 1rem;
+            border: 2px solid var(--primary-color);
+            transition: all 0.3s ease;
+        }
+
+        .cart-item:hover {
+            border-color: var(--accent-color);
+            transform: translateX(10px);
+        }
+
+        .cart-item-image {
+            width: 60px;
+            height: 60px;
+            background-size: cover;
+            background-position: center;
+            border-radius: 10px;
+            margin-right: 1rem;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .cart-item-info {
+            flex: 1;
+        }
+
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin: 0.5rem 0;
+        }
+
+        .quantity-btn {
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .quantity-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 5px 15px rgba(255, 182, 193, 0.4);
+        }
+
+        .cart-total {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 20px;
+            margin-top: 2rem;
+            text-align: center;
+            border: 3px solid #FFF5E5;
+            box-shadow: 0 10px 30px rgba(255, 245, 229, 0.3);
+        }
+
+        .profile-container {
+            background: var(--card-bg);
+            backdrop-filter: blur(15px);
+            padding: 2rem;
+            border-radius: 20px;
+            border: 2px solid var(--primary-color);
+            margin-top: 2rem;
+        }
+
+        .profile-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--secondary-color);
+        }
+
+        .profile-avatar {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color), var(--accent-color));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin: 0 auto 1rem;
+            animation: profileGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes profileGlow {
+
+            0%,
+            100% {
+                box-shadow: 0 0 20px rgba(255, 182, 193, 0.5);
+            }
+
+            50% {
+                box-shadow: 0 0 30px rgba(152, 251, 152, 0.7);
+            }
+        }
+
+        .admin-header {
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 1.5rem;
+            border-radius: 20px;
+            margin-bottom: 2rem;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(255, 182, 193, 0.4);
+        }
+
+        .admin-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 15px;
+            text-align: center;
+            border: 2px solid var(--accent-color);
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(152, 251, 152, 0.3);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .admin-section {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            border: 2px solid #FFF5E5;
+        }
+
+        .notification {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            background: linear-gradient(45deg, var(--accent-color), #87CEEB);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(152, 251, 152, 0.4);
+            z-index: 1001;
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+            border: 2px solid #FFF5E5;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+            animation: notificationPulse 0.5s ease;
+        }
+
+        @keyframes notificationPulse {
+            0% {
+                transform: translateX(0) scale(1);
+            }
+
+            50% {
+                transform: translateX(0) scale(1.05);
+            }
+
+            100% {
+                transform: translateX(0) scale(1);
+            }
+        }
+
+        .user-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+            background: var(--card-bg);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .user-table th,
+        .user-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 182, 193, 0.3);
+        }
+
+        .user-table th {
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            color: white;
+        }
+
+        .user-table tr:hover {
+            background-color: rgba(255, 182, 193, 0.1);
+        }
+
+        .admin-action-btn {
+            padding: 0.3rem 0.8rem;
+            margin-right: 0.5rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+
+        .edit-btn {
+            background: linear-gradient(45deg, #87CEEB, var(--accent-color));
+            color: white;
+        }
+
+        .delete-btn {
+            background: linear-gradient(45deg, #FF6B6B, #FF8E8E);
+            color: white;
+        }
+
+        .view-btn {
+            background: linear-gradient(45deg, var(--secondary-color), var(--primary-color));
+            color: white;
+        }
+
+        .edit-vinyl-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-top: 1rem;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 10px;
+            border: 1px solid var(--primary-color);
+        }
+
+        .change-image-btn {
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            background: rgba(255, 255, 255, 0.8);
+            border: none;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            z-index: 10;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .change-image-btn:hover {
+            background: rgba(255, 255, 255, 1);
+            transform: scale(1.1);
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 1rem;
+                flex-wrap: wrap;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .admin-nav-links {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .search-container {
+                min-width: 200px;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero p {
+                font-size: 1.2rem;
+            }
+
+            .catalog-header {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .search-filter {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .modal {
+                width: 95%;
+                margin: 1rem;
+            }
+
+            .modal-form {
+                grid-template-columns: 1fr;
+            }
+
+            .featured-albums {
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            }
+
+            .user-table {
+                font-size: 0.8rem;
+            }
+
+            .admin-action-btn {
+                padding: 0.2rem 0.5rem;
+                font-size: 0.7rem;
+            }
+
+            .accessibility-panel {
+                width: 280px;
+                left: 10px;
+                bottom: 160px;
+            }
+
+            .night-mode-toggle-btn {
+                bottom: 90px;
+                left: 10px;
+            }
+
+            .accessibility-toggle-btn {
+                left: 10px;
+            }
+        }
+
+        @font-face {
+            font-family: 'OpenDyslexic';
+            src: url('https://cdn.jsdelivr.net/npm/open-dyslexic@1.0.3/otf/OpenDyslexic-Regular.otf') format('opentype');
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bg-image"></div>
+    <div class="vinyl-bg"></div>
+
+    <div class="accessibility-toggle-btn" onclick="toggleAccessibilityPanel()">
+        ⚙️
+    </div>
+
+    <div class="night-mode-toggle-btn" onclick="toggleNightModeFromButton()">
+        🌙
+    </div>
+
+    <div class="accessibility-panel" id="accessibility-panel">
+        <div class="accessibility-header">
+            <h3>⚙️ Configuración</h3>
+            <button class="close-panel" onclick="toggleAccessibilityPanel()">&times;</button>
+        </div>
+
+        <div class="accessibility-section">
+            <h4>
+                🎨 Contraste
+                <span class="current-setting" id="contrast-status">Normal</span>
+            </h4>
+            <div class="accessibility-btn-group">
+                <button class="accessibility-btn active" onclick="setContrastMode('normal')">Normal</button>
+                <button class="accessibility-btn" onclick="setContrastMode('high')">Alto Contraste</button>
+            </div>
+        </div>
+
+        <div class="accessibility-section">
+            <h4>
+                🔠 Tamaño de Fuente
+                <span class="current-setting" id="fontsize-status">Mediana</span>
+            </h4>
+            <div class="accessibility-btn-group">
+                <button class="accessibility-btn" onclick="changeFontSize('small')">Pequeña</button>
+                <button class="accessibility-btn active" onclick="changeFontSize('medium')">Mediana</button>
+                <button class="accessibility-btn" onclick="changeFontSize('large')">Grande</button>
+                <button class="accessibility-btn" onclick="changeFontSize('xlarge')">Muy Grande</button>
+            </div>
+        </div>
+
+        <div class="accessibility-section">
+            <h4>
+                🌙 Modo Nocturno
+                <span class="current-setting" id="nightmode-status">Desactivado</span>
+            </h4>
+            <div class="accessibility-btn-group">
+                <button class="accessibility-btn active" onclick="setNightMode(false)">Desactivado</button>
+                <button class="accessibility-btn" onclick="setNightMode(true)">Activado</button>
+            </div>
+        </div>
+
+        <div class="accessibility-section">
+            <h4>
+                ⚫ Escala de Grises
+                <span class="current-setting" id="grayscale-status">Desactivado</span>
+            </h4>
+            <div class="accessibility-btn-group">
+                <button class="accessibility-btn active" onclick="setGrayscaleMode(false)">Desactivado</button>
+                <button class="accessibility-btn" onclick="setGrayscaleMode(true)">Activado</button>
+            </div>
+        </div>
+
+        <div class="accessibility-section">
+            <h4>
+                📖 Guía de Lectura
+                <span class="current-setting" id="reading-status">Desactivado</span>
+            </h4>
+            <div class="accessibility-btn-group">
+                <button class="accessibility-btn active" onclick="setReadingGuide(false)">Desactivado</button>
+                <button class="accessibility-btn" onclick="setReadingGuide(true)">Activado</button>
+            </div>
+        </div>
+
+        <div class="accessibility-section">
+            <h4>
+                🔤 Tipografía
+                <span class="current-setting" id="font-status">Arial</span>
+            </h4>
+            <div class="accessibility-btn-group">
+                <button class="accessibility-btn active" onclick="changeFontFamily('arial')">Arial</button>
+                <button class="accessibility-btn" onclick="changeFontFamily('verdana')">Verdana</button>
+                <button class="accessibility-btn" onclick="changeFontFamily('georgia')">Georgia</button>
+            </div>
+            <div class="accessibility-btn-group" style="margin-top: 0.5rem;">
+                <button class="accessibility-btn" onclick="changeFontFamily('comic')">Comic Sans</button>
+                <button class="accessibility-btn" onclick="changeFontFamily('open-dyslexic')">OpenDyslexic</button>
+            </div>
+        </div>
+
+        <div class="accessibility-section">
+            <h4>
+                🔊 Lector de Pantalla
+                <span class="current-setting" id="reader-status">Desactivado</span>
+            </h4>
+            <div class="accessibility-btn-group">
+                <button class="accessibility-btn active" onclick="setScreenReader(false)">Desactivado</button>
+                <button class="accessibility-btn" onclick="setScreenReader(true)">Activado</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="reading-guide" id="reading-guide">
+        <div class="reading-line" id="reading-line"></div>
+    </div>
+
+    <nav class="navbar">
+        <div class="logo" onclick="showHome()">🎵 VinylVibes</div>
+        <ul class="nav-links" id="regular-nav">
+            <li><a href="#" onclick="showHome()">Inicio</a></li>
+            <li><a href="#" onclick="showCatalog()">Catálogo</a></li>
+        </ul>
+
+        <ul class="admin-nav-links" id="admin-nav">
+            <li><a href="#" onclick="showUserManagement()">👥 Gestionar Usuarios</a></li>
+            <li><a href="#" onclick="showVinylManagement()">🎵 Gestionar Vinilos</a></li>
+            <li><a href="#" onclick="showAddVinyl()">➕ Agregar Vinilo</a></li>
+        </ul>
+
+        <div class="search-container">
+            <input type="text" class="header-search" id="header-search" placeholder="Buscar vinilos..."
+                oninput="searchFromHeader()">
+            <button class="voice-btn" id="voice-btn" onclick="toggleVoiceSearch()">🎤</button>
+        </div>
+
+        <div class="user-actions">
+            <span id="user-name" class="hidden"></span>
+            <div class="cart-icon" id="cart-section" onclick="showCart()">
+                🛒
+                <span class="cart-count" id="cart-count">0</span>
+            </div>
+            <div class="profile-icon" onclick="showProfile()">
+                👤
+            </div>
+            <button class="btn" id="login-btn" onclick="showLoginModal()">Iniciar Sesión</button>
+            <button class="btn btn-secondary hidden" id="logout-btn" onclick="logout()">Cerrar Sesión</button>
+        </div>
+    </nav>
+
+    <div class="modal-overlay" id="login-modal">
+        <div class="modal">
+            <button class="modal-close" onclick="closeModals()">&times;</button>
+            <h2 style="text-align: center; margin-bottom: 2rem; color: var(--primary-color);">Iniciar Sesión</h2>
+            <form id="login-form">
+                <div class="form-group">
+                    <label>📧 Email:</label>
+                    <input type="email" id="login-email" placeholder="tu@email.com" required>
+                </div>
+                <div class="form-group">
+                    <label>🔒 Contraseña:</label>
+                    <input type="password" id="login-password" placeholder="Tu contraseña" required>
+                </div>
+                <button type="submit" class="btn" style="width: 100%; margin-bottom: 1rem;">Iniciar Sesión</button>
+            </form>
+            <p style="text-align: center;">¿No tienes cuenta?
+                <a href="#" onclick="showRegisterModal()"
+                    style="color: var(--secondary-color); text-decoration: none;">Regístrate
+                    aquí</a>
+            </p>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="register-modal">
+        <div class="modal">
+            <button class="modal-close" onclick="closeModals()">&times;</button>
+            <h2 style="text-align: center; margin-bottom: 2rem; color: var(--primary-color);">Registro</h2>
+            <form id="register-form">
+                <div class="form-group">
+                    <label>👤 Nombre Completo:</label>
+                    <input type="text" id="register-name" placeholder="Tu nombre completo" required>
+                </div>
+                <div class="form-group">
+                    <label>📧 Email:</label>
+                    <input type="email" id="register-email" placeholder="tu@email.com" required>
+                </div>
+                <div class="form-group">
+                    <label>🔒 Contraseña:</label>
+                    <input type="password" id="register-password" placeholder="Tu contraseña" required>
+                </div>
+                <div class="form-group">
+                    <label>🔒 Confirmar Contraseña:</label>
+                    <input type="password" id="register-confirm" placeholder="Confirma tu contraseña" required>
+                </div>
+                <button type="submit" class="btn" style="width: 100%; margin-bottom: 1rem;">Registrarse</button>
+            </form>
+            <p style="text-align: center;">¿Ya tienes cuenta?
+                <a href="#" onclick="showLoginModalFromRegister()"
+                    style="color: var(--secondary-color); text-decoration: none">Inicia
+                    sesión
+                    aquí</a>
+            </p>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="change-image-modal">
+        <div class="modal">
+            <button class="modal-close" onclick="closeModals()">&times;</button>
+            <h2 style="text-align: center; margin-bottom: 2rem; color: var(--primary-color);">Cambiar Imagen (Admin)
+            </h2>
+            <div class="form-group">
+                <label>🔗 URL de la imagen:</label>
+                <input type="text" id="image-url" placeholder="https://ejemplo.com/imagen.jpg" value="">
+            </div>
+            <button class="btn" style="width: 100%; margin-bottom: 1rem;" onclick="applyImageChange()">Aplicar
+                Cambio</button>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="edit-user-modal">
+        <div class="modal">
+            <button class="modal-close" onclick="closeModals()">&times;</button>
+            <h2 style="text-align: center; margin-bottom: 2rem; color: var(--primary-color);">Editar Usuario</h2>
+            <form id="edit-user-form" class="modal-form">
+                <div class="form-group">
+                    <label>👤 Nombre Completo:</label>
+                    <input type="text" id="edit-user-name" placeholder="Nombre completo" required>
+                </div>
+                <div class="form-group">
+                    <label>📧 Email:</label>
+                    <input type="email" id="edit-user-email" placeholder="email@ejemplo.com" required>
+                </div>
+                <div class="form-group">
+                    <label>🏷️ Rol:</label>
+                    <select id="edit-user-role" required>
+                        <option value="user">Usuario</option>
+                        <option value="admin">Administrador</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>📅 Fecha de Registro:</label>
+                    <input type="date" id="edit-user-date" required>
+                </div>
+                <div class="form-group full-width">
+                    <label>📝 Notas Adicionales:</label>
+                    <textarea id="edit-user-notes" placeholder="Notas sobre el usuario..." rows="3"></textarea>
+                </div>
+                <button type="submit" class="btn" style="grid-column: 1/-1;">Guardar Cambios</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="view-user-modal">
+        <div class="modal">
+            <button class="modal-close" onclick="closeModals()">&times;</button>
+            <h2 style="text-align: center; margin-bottom: 2rem; color: var(--primary-color);">Detalles del Usuario</h2>
+            <div id="user-details-content">
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="edit-vinyl-modal">
+        <div class="modal">
+            <button class="modal-close" onclick="closeModals()">&times;</button>
+            <h2 style="text-align: center; margin-bottom: 2rem; color: var(--primary-color);">Editar Vinilo</h2>
+            <form id="edit-vinyl-form" class="modal-form">
+                <div class="form-group">
+                    <label>🎵 Título:</label>
+                    <input type="text" id="edit-vinyl-title" placeholder="Título del álbum" required>
+                </div>
+                <div class="form-group">
+                    <label>👨‍🎤 Artista:</label>
+                    <input type="text" id="edit-vinyl-artist" placeholder="Nombre del artista" required>
+                </div>
+                <div class="form-group">
+                    <label>🎼 Género:</label>
+                    <select id="edit-vinyl-genre" required>
+                        <option value="">Seleccionar género</option>
+                        <option value="rock">Rock</option>
+                        <option value="jazz">Jazz</option>
+                        <option value="pop">Pop</option>
+                        <option value="blues">Blues</option>
+                        <option value="electronic">Electrónica</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>💰 Precio (MXN):</label>
+                    <input type="number" id="edit-vinyl-price" placeholder="0" min="0" step="0.01" required>
+                </div>
+                <div class="form-group">
+                    <label>📦 Stock:</label>
+                    <input type="number" id="edit-vinyl-stock" placeholder="0" min="0" required>
+                </div>
+                <div class="form-group">
+                    <label>📅 Año de Lanzamiento:</label>
+                    <input type="number" id="edit-vinyl-year" placeholder="2023" min="1900" max="2030">
+                </div>
+                <div class="form-group full-width">
+                    <label>🖼️ URL de la imagen:</label>
+                    <input type="text" id="edit-vinyl-image-url" placeholder="https://ejemplo.com/imagen.jpg">
+                </div>
+                <div class="form-group full-width">
+                    <label>📝 Descripción:</label>
+                    <textarea id="edit-vinyl-description" placeholder="Descripción del vinilo..." rows="3"></textarea>
+                </div>
+                <button type="submit" class="btn" style="grid-column: 1/-1;">Guardar Cambios</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="container">
+        <div id="home-page">
+            <div class="hero">
+                <h1>Bienvenido a VinylVibe</h1>
+                <p>La mejor colección de vinilos vintage y modernos</p>
+                <button class="btn" onclick="showCatalog()">🎵 Explorar Catálogo</button>
+            </div>
+
+            <div class="featured-section">
+                <h2 class="featured-title">🔥 Álbumes Destacados</h2>
+                <div class="featured-albums">
+                    <div class="featured-album">
+                        <div class="album-cover"
+                            style="background-image: url('https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400&h=400');">
+                            <button class="change-image-btn hidden admin-only"
+                                onclick="openChangeImageModal(this)">🖼️</button>
+                        </div>
+                        <div class="album-info">
+                            <h3>Abbey Road</h3>
+                            <p class="album-artist">👨‍🎤 The Beatles</p>
+                            <span class="album-badge">Más Vendido</span>
+                        </div>
+                        <button class="add-to-cart" onclick="addToCartFromFeatured(1)">🛒 Agregar al Carrito</button>
+                    </div>
+
+                    <div class="featured-album">
+                        <div class="album-cover"
+                            style="background-image: url('https://images.unsplash.com/photo-1571330735066-03aaa9429d89?w=400&h=400');">
+                            <button class="change-image-btn hidden admin-only"
+                                onclick="openChangeImageModal(this)">🖼️</button>
+                        </div>
+                        <div class="album-info">
+                            <h3>Kind of Blue</h3>
+                            <p class="album-artist">👨‍🎤 Miles Davis</p>
+                            <span class="album-badge">Recién Llegado</span>
+                        </div>
+                        <button class="add-to-cart" onclick="addToCartFromFeatured(2)">🛒 Agregar al Carrito</button>
+                    </div>
+
+                    <div class="featured-album">
+                        <div class="album-cover"
+                            style="background-image: url('https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=400&h=400');">
+                            <button class="change-image-btn hidden admin-only"
+                                onclick="openChangeImageModal(this)">🖼️</button>
+                        </div>
+                        <div class="album-info">
+                            <h3>Thriller</h3>
+                            <p class="album-artist">👨‍🎤 Michael Jackson</p>
+                            <span class="album-badge">Clásico</span>
+                        </div>
+                        <button class="add-to-cart" onclick="addToCartFromFeatured(3)">🛒 Agregar al Carrito</button>
+                    </div>
+
+                    <div class="featured-album">
+                        <div class="album-cover"
+                            style="background-image: url('https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=400&h=400');">
+                            <button class="change-image-btn hidden admin-only"
+                                onclick="openChangeImageModal(this)">🖼️</button>
+                        </div>
+                        <div class="album-info">
+                            <h3>Dark Side of the Moon</h3>
+                            <p class="album-artist">👨‍🎤 Pink Floyd</p>
+                            <span class="album-badge">Edición Especial</span>
+                        </div>
+                        <button class="add-to-cart" onclick="addToCartFromFeatured(4)">🛒 Agregar al Carrito</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="features">
+                <div class="feature-card" onclick="showCatalog()">
+                    <h3>🎵 Catálogo Completo</h3>
+                    <p>Miles de vinilos de todos los géneros y épocas. Desde clásicos hasta lanzamientos recientes.</p>
+                </div>
+                <div class="feature-card" onclick="showLoginModal()">
+                    <h3>👤 Perfil Personal</h3>
+                    <p>Crea tu cuenta para guardar favoritos, historial de compras y recomendaciones personalizadas.</p>
+                </div>
+                <div class="feature-card" onclick="showCart()">
+                    <h3>🛒 Carrito Inteligente</h3>
+                    <p>Gestiona tus compras fácilmente con nuestro sistema de carrito intuitivo y seguro.</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="catalog-page" class="hidden">
+            <div class="catalog-header">
+                <h2>🎵 Catálogo de Vinilos</h2>
+                <div class="search-filter">
+                    <input type="text" class="search-input" placeholder="🔍 Buscar vinilo..." id="search-input"
+                        oninput="filterVinyls()">
+                    <select class="search-input" id="genre-filter" onchange="filterVinyls()">
+                        <option value="">Todos los géneros</option>
+                        <option value="rock">Rock</option>
+                        <option value="jazz">Jazz</option>
+                        <option value="pop">Pop</option>
+                        <option value="blues">Blues</option>
+                        <option value="electronic">Electrónica</option>
+                    </select>
+                </div>
+            </div>
+            <div class="vinyl-grid" id="vinyl-grid">
+            </div>
+        </div>
+
+        <div id="cart-page" class="hidden">
+            <h2>🛒 Mi Carrito</h2>
+            <div id="cart-items">
+            </div>
+            <div class="cart-total">
+                <h3>Total: $<span id="cart-total">0</span> MXN</h3>
+                <button class="btn" onclick="checkout()">💳 Proceder al Pago</button>
+            </div>
+        </div>
+
+        <div id="profile-page" class="hidden">
+            <div class="profile-container">
+                <div class="profile-header">
+                    <div class="profile-avatar">👤</div>
+                    <h2>Mi Perfil</h2>
+                </div>
+                <div id="user-profile">
+                </div>
+            </div>
+        </div>
+
+        <div id="admin-page" class="hidden">
+            <div class="admin-header">
+                <h1>🛠️ Panel de Administración</h1>
+                <p>Bienvenido, Administrador</p>
+            </div>
+
+            <div class="admin-stats">
+                <div class="stat-card">
+                    <div class="stat-number" id="total-users">0</div>
+                    <p>Usuarios Registrados</p>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="total-vinyls">0</div>
+                    <p>Vinilos en Catálogo</p>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="total-sales">0</div>
+                    <p>Ventas Totales</p>
+                </div>
+            </div>
+
+            <div class="admin-section">
+                <h3>👥 Gestión de Usuarios</h3>
+                <div class="user-list" id="admin-users">
+                    <table class="user-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nombre</th>
+                                <th>Email</th>
+                                <th>Rol</th>
+                                <th>Fecha Registro</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="users-table-body">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="admin-section">
+                <h3>🎵 Gestión de Vinilos</h3>
+                <div id="vinyl-management">
+                    <h4>Lista de Vinilos</h4>
+                    <div id="admin-vinyls-list">
+                    </div>
+
+                    <h4 style="margin-top: 2rem;">➕ Agregar Nuevo Vinilo</h4>
+                    <form id="add-vinyl-form" class="modal-form">
+                        <div class="form-group">
+                            <label>🎵 Título:</label>
+                            <input type="text" id="vinyl-title" placeholder="Título del álbum" required>
+                        </div>
+                        <div class="form-group">
+                            <label>👨‍🎤 Artista:</label>
+                            <input type="text" id="vinyl-artist" placeholder="Nombre del artista" required>
+                        </div>
+                        <div class="form-group">
+                            <label>🎼 Género:</label>
+                            <select id="vinyl-genre" required>
+                                <option value="">Seleccionar género</option>
+                                <option value="rock">Rock</option>
+                                <option value="jazz">Jazz</option>
+                                <option value="pop">Pop</option>
+                                <option value="blues">Blues</option>
+                                <option value="electronic">Electrónica</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>💰 Precio (MXN):</label>
+                            <input type="number" id="vinyl-price" placeholder="0" min="0" step="0.01" required>
+                        </div>
+                        <div class="form-group">
+                            <label>📦 Stock:</label>
+                            <input type="number" id="vinyl-stock" placeholder="0" min="0" required>
+                        </div>
+                        <div class="form-group">
+                            <label>📅 Año:</label>
+                            <input type="number" id="vinyl-year" placeholder="2023" min="1900" max="2030">
+                        </div>
+                        <div class="form-group full-width">
+                            <label>🖼️ URL de la imagen:</label>
+                            <input type="text" id="vinyl-image-url" placeholder="https://ejemplo.com/imagen.jpg">
+                        </div>
+                        <div class="form-group full-width">
+                            <label>📝 Descripción:</label>
+                            <textarea id="vinyl-description" placeholder="Descripción del vinilo..."
+                                rows="3"></textarea>
+                        </div>
+                        <button type="submit" class="btn" style="grid-column: 1/-1;">Agregar Vinilo</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="notification" class="notification">
+        <span id="notification-text"></span>
+    </div>
+
+    <script>
+        let currentUser = null;
+        let cart = [];
+        let allVinyls = [];
+        let recognition = null;
+        let isRecording = false;
+        let currentImageElement = null;
+        let currentEditingUserId = null;
+        let currentEditingVinylId = null;
+        let registeredUsers = [
+            {
+                id: 1,
+                name: 'Administrador',
+                email: 'admin@vinylvibe.com',
+                password: 'admin123',
+                role: 'admin',
+                registerDate: '2023-01-01',
+                notes: 'Administrador principal del sistema'
+            },
+        ];
+
+        let screenReaderActive = false;
+        let readingGuideActive = false;
+        let readingLinePosition = 0;
+        let currentElementIndex = 0;
+        let focusableElements = [];
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const savedUsers = localStorage.getItem('vinylVibesUsers');
+            if (savedUsers) {
+                registeredUsers = JSON.parse(savedUsers);
+            } else {
+                localStorage.setItem('vinylVibesUsers', JSON.stringify(registeredUsers));
+            }
+
+            const savedCurrentUser = localStorage.getItem('vinylVibesCurrentUser');
+            if (savedCurrentUser) {
+                currentUser = JSON.parse(savedCurrentUser);
+                updateUserInterface();
+            }
+
+            const savedCart = localStorage.getItem('vinylVibesCart');
+            if (savedCart) {
+                cart = JSON.parse(savedCart);
+                updateCartCount();
+            }
+
+            const savedVinyls = localStorage.getItem('vinylVibesVinyls');
+            if (savedVinyls) {
+                allVinyls = JSON.parse(savedVinyls);
+            } else {
+                allVinyls = [
+                    { id: 1, title: 'Abbey Road', artist: 'The Beatles', genre: 'rock', price: 899, stock: 10, year: 1969, description: 'Último álbum grabado por The Beatles', image: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400&h=400' },
+                    { id: 2, title: 'Kind of Blue', artist: 'Miles Davis', genre: 'jazz', price: 1200, stock: 5, year: 1959, description: 'Obra maestra del jazz modal', image: 'https://images.unsplash.com/photo-1571330735066-03aaa9429d89?w=400&h=400' },
+                    { id: 3, title: 'Thriller', artist: 'Michael Jackson', genre: 'pop', price: 999, stock: 8, year: 1982, description: 'El álbum más vendido de todos los tiempos', image: 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=400&h=400' },
+                    { id: 4, title: 'The Dark Side of the Moon', artist: 'Pink Floyd', genre: 'rock', price: 1100, stock: 7, year: 1973, description: 'Álbum conceptual sobre la locura', image: 'https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=400&h=400' },
+                    { id: 5, title: 'Random Access Memories', artist: 'Daft Punk', genre: 'electronic', price: 950, stock: 6, year: 2013, description: 'Álbum de regreso de Daft Punk', image: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400&h=400' },
+                    { id: 6, title: 'Born to Run', artist: 'Bruce Springsteen', genre: 'rock', price: 850, stock: 4, year: 1975, description: 'Tercer álbum de Bruce Springsteen', image: 'https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=400&h=400' },
+                    { id: 7, title: 'What\'s Going On', artist: 'Marvin Gaye', genre: 'soul', price: 1050, stock: 6, year: 1971, description: 'Álbum conceptual sobre problemas sociales', image: 'https://images.unsplash.com/photo-1571330735066-03aaa9429d89?w=400&h=400' },
+                    { id: 8, title: 'OK Computer', artist: 'Radiohead', genre: 'alternative', price: 1150, stock: 3, year: 1997, description: 'Tercer álbum de Radiohead', image: 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=400&h=400' }
+                ];
+                localStorage.setItem('vinylVibesVinyls', JSON.stringify(allVinyls));
+            }
+
+            loadAccessibilitySettings();
+            loadVinyls();
+            initVoiceRecognition();
+
+            document.getElementById('login-form').addEventListener('submit', handleLogin);
+            document.getElementById('register-form').addEventListener('submit', handleRegister);
+            document.getElementById('add-vinyl-form').addEventListener('submit', handleAddVinyl);
+            document.getElementById('edit-user-form').addEventListener('submit', handleEditUser);
+            document.getElementById('edit-vinyl-form').addEventListener('submit', handleEditVinyl);
+
+            document.addEventListener('click', function (e) {
+                if (e.target.classList.contains('modal-overlay')) {
+                    closeModals();
+                }
+            });
+
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape') {
+                    closeModals();
+                }
+            });
+
+            document.addEventListener('mousemove', function (e) {
+                if (readingGuideActive) {
+                    updateReadingLine(e.clientY);
+                }
+            });
+
+            document.addEventListener('click', function (e) {
+                const panel = document.getElementById('accessibility-panel');
+                const toggleBtn = document.querySelector('.accessibility-toggle-btn');
+                const nightModeBtn = document.querySelector('.night-mode-toggle-btn');
+
+                if (panel.classList.contains('open') &&
+                    !panel.contains(e.target) &&
+                    !toggleBtn.contains(e.target) &&
+                    !nightModeBtn.contains(e.target)) {
+                    toggleAccessibilityPanel();
+                }
+            });
+        });
+
+        function toggleAccessibilityPanel() {
+            const panel = document.getElementById('accessibility-panel');
+            panel.classList.toggle('open');
+        }
+
+        function setContrastMode(mode) {
+            document.querySelectorAll('.accessibility-section').forEach(section => {
+                if (section.querySelector('#contrast-status')) {
+                    section.querySelectorAll('.accessibility-btn').forEach(btn => btn.classList.remove('active'));
+                }
+            });
+            event.target.classList.add('active');
+
+            if (mode === 'high') {
+                document.body.classList.add('high-contrast');
+                document.getElementById('contrast-status').textContent = 'Alto';
+            } else {
+                document.body.classList.remove('high-contrast');
+                document.getElementById('contrast-status').textContent = 'Normal';
+            }
+            saveAccessibilitySettings();
+        }
+
+        function changeFontSize(size) {
+            document.querySelectorAll('.accessibility-section').forEach(section => {
+                if (section.querySelector('#fontsize-status')) {
+                    section.querySelectorAll('.accessibility-btn').forEach(btn => btn.classList.remove('active'));
+                }
+            });
+            event.target.classList.add('active');
+
+            document.body.classList.remove('font-small', 'font-medium', 'font-large', 'font-xlarge');
+            document.body.classList.add(`font-${size}`);
+
+            const sizeNames = { small: 'Pequeña', medium: 'Mediana', large: 'Grande', xlarge: 'Muy Grande' };
+            document.getElementById('fontsize-status').textContent = sizeNames[size];
+            saveAccessibilitySettings();
+        }
+
+        function setNightMode(enabled) {
+            document.querySelectorAll('.accessibility-section').forEach(section => {
+                if (section.querySelector('#nightmode-status')) {
+                    section.querySelectorAll('.accessibility-btn').forEach(btn => btn.classList.remove('active'));
+                }
+            });
+            event.target.classList.add('active');
+
+            if (enabled) {
+                document.body.classList.add('night-mode');
+                document.getElementById('nightmode-status').textContent = 'Activado';
+            } else {
+                document.body.classList.remove('night-mode');
+                document.getElementById('nightmode-status').textContent = 'Desactivado';
+            }
+            saveAccessibilitySettings();
+        }
+
+        function toggleNightModeFromButton() {
+            const isNightMode = document.body.classList.contains('night-mode');
+            setNightMode(!isNightMode);
+            updateAccessibilityButtons();
+        }
+
+        function setGrayscaleMode(enabled) {
+            document.querySelectorAll('.accessibility-section').forEach(section => {
+                if (section.querySelector('#grayscale-status')) {
+                    section.querySelectorAll('.accessibility-btn').forEach(btn => btn.classList.remove('active'));
+                }
+            });
+            event.target.classList.add('active');
+
+            if (enabled) {
+                document.body.classList.add('grayscale');
+                document.getElementById('grayscale-status').textContent = 'Activado';
+            } else {
+                document.body.classList.remove('grayscale');
+                document.getElementById('grayscale-status').textContent = 'Desactivado';
+            }
+            saveAccessibilitySettings();
+        }
+
+        function setReadingGuide(enabled) {
+            document.querySelectorAll('.accessibility-section').forEach(section => {
+                if (section.querySelector('#reading-status')) {
+                    section.querySelectorAll('.accessibility-btn').forEach(btn => btn.classList.remove('active'));
+                }
+            });
+            event.target.classList.add('active');
+
+            readingGuideActive = enabled;
+            const guide = document.getElementById('reading-guide');
+
+            if (enabled) {
+                guide.classList.add('active');
+                document.getElementById('reading-status').textContent = 'Activado';
+            } else {
+                guide.classList.remove('active');
+                document.getElementById('reading-status').textContent = 'Desactivado';
+            }
+            saveAccessibilitySettings();
+        }
+
+        function updateReadingLine(y) {
+            const line = document.getElementById('reading-line');
+            line.style.top = `${y}px`;
+        }
+
+        function changeFontFamily(font) {
+            document.querySelectorAll('.accessibility-section').forEach(section => {
+                if (section.querySelector('#font-status')) {
+                    section.querySelectorAll('.accessibility-btn').forEach(btn => btn.classList.remove('active'));
+                }
+            });
+            event.target.classList.add('active');
+
+            document.body.classList.remove('font-arial', 'font-verdana', 'font-georgia', 'font-comic', 'font-open-dyslexic');
+            document.body.classList.add(`font-${font}`);
+
+            const fontNames = { arial: 'Arial', verdana: 'Verdana', georgia: 'Georgia', comic: 'Comic Sans', 'open-dyslexic': 'OpenDyslexic' };
+            document.getElementById('font-status').textContent = fontNames[font];
+            saveAccessibilitySettings();
+        }
+
+        function setScreenReader(enabled) {
+            document.querySelectorAll('.accessibility-section').forEach(section => {
+                if (section.querySelector('#reader-status')) {
+                    section.querySelectorAll('.accessibility-btn').forEach(btn => btn.classList.remove('active'));
+                }
+            });
+            event.target.classList.add('active');
+
+            if (enabled) {
+                startScreenReader();
+                document.getElementById('reader-status').textContent = 'Activado';
+            } else {
+                stopScreenReader();
+                document.getElementById('reader-status').textContent = 'Desactivado';
+            }
+            saveAccessibilitySettings();
+        }
+
+        function startScreenReader() {
+            screenReaderActive = true;
+            showNotification('🔊 Lector de pantalla activado. Usa las teclas de flecha para navegar.');
+
+            focusableElements = Array.from(document.querySelectorAll(
+                'a, button, input, textarea, select, [tabindex]:not([tabindex="-1"])'
+            )).filter(el => {
+                return !el.disabled && el.offsetParent !== null;
+            });
+
+            currentElementIndex = 0;
+
+            if (focusableElements.length > 0) {
+                focusableElements[currentElementIndex].focus();
+                speakElement(focusableElements[currentElementIndex]);
+            }
+
+            document.addEventListener('keydown', handleScreenReaderNavigation);
+        }
+
+        function stopScreenReader() {
+            screenReaderActive = false;
+            showNotification('🔇 Lector de pantalla desactivado.');
+            document.removeEventListener('keydown', handleScreenReaderNavigation);
+
+            focusableElements = [];
+            currentElementIndex = 0;
+        }
+
+        function handleScreenReaderNavigation(e) {
+            if (!screenReaderActive) return;
+
+            if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
+                e.preventDefault();
+                currentElementIndex = (currentElementIndex + 1) % focusableElements.length;
+                focusableElements[currentElementIndex].focus();
+                speakElement(focusableElements[currentElementIndex]);
+            } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+                e.preventDefault();
+                currentElementIndex = (currentElementIndex - 1 + focusableElements.length) % focusableElements.length;
+                focusableElements[currentElementIndex].focus();
+                speakElement(focusableElements[currentElementIndex]);
+            } else if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                const element = focusableElements[currentElementIndex];
+                if (element.tagName === 'A' || element.tagName === 'BUTTON' || element.type === 'submit') {
+                    element.click();
+                }
+            }
+        }
+
+        function speakElement(element) {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+
+                const text = getElementText(element);
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'es-ES';
+                utterance.rate = 0.8;
+                utterance.pitch = 1;
+
+                window.speechSynthesis.speak(utterance);
+            }
+        }
+
+        function getElementText(element) {
+            let text = '';
+
+            if (element.getAttribute('aria-label')) {
+                text = element.getAttribute('aria-label');
+            } else if (element.textContent.trim()) {
+                text = element.textContent.trim();
+            } else if (element.placeholder) {
+                text = 'Campo de entrada: ' + element.placeholder;
+            } else if (element.alt) {
+                text = 'Imagen: ' + element.alt;
+            } else if (element.type) {
+                text = 'Campo ' + element.type;
+            } else {
+                text = 'Elemento sin descripción';
+            }
+
+            return text;
+        }
+
+        function saveAccessibilitySettings() {
+            const settings = {
+                highContrast: document.body.classList.contains('high-contrast'),
+                fontSize: document.body.className.match(/font-(small|medium|large|xlarge)/)?.[1] || 'medium',
+                nightMode: document.body.classList.contains('night-mode'),
+                grayscale: document.body.classList.contains('grayscale'),
+                readingGuide: readingGuideActive,
+                fontFamily: document.body.className.match(/font-(arial|verdana|georgia|comic|open-dyslexic)/)?.[1] || 'arial',
+                screenReader: screenReaderActive
+            };
+
+            localStorage.setItem('vinylVibesAccessibility', JSON.stringify(settings));
+        }
+
+        function loadAccessibilitySettings() {
+            const savedSettings = localStorage.getItem('vinylVibesAccessibility');
+            if (savedSettings) {
+                const settings = JSON.parse(savedSettings);
+
+                if (settings.highContrast) {
+                    document.body.classList.add('high-contrast');
+                    document.getElementById('contrast-status').textContent = 'Alto';
+                }
+
+                changeFontSize(settings.fontSize);
+
+                if (settings.nightMode) {
+                    document.body.classList.add('night-mode');
+                    document.getElementById('nightmode-status').textContent = 'Activado';
+                }
+
+                if (settings.grayscale) {
+                    document.body.classList.add('grayscale');
+                    document.getElementById('grayscale-status').textContent = 'Activado';
+                }
+
+                if (settings.readingGuide) {
+                    readingGuideActive = true;
+                    document.getElementById('reading-guide').classList.add('active');
+                    document.getElementById('reading-status').textContent = 'Activado';
+                }
+
+                changeFontFamily(settings.fontFamily);
+
+                updateAccessibilityButtons();
+            }
+        }
+
+        function updateAccessibilityButtons() {
+            const isHighContrast = document.body.classList.contains('high-contrast');
+            const fontSize = document.body.className.match(/font-(small|medium|large|xlarge)/)?.[1] || 'medium';
+            const isNightMode = document.body.classList.contains('night-mode');
+            const isGrayscale = document.body.classList.contains('grayscale');
+            const fontFamily = document.body.className.match(/font-(arial|verdana|georgia|comic|open-dyslexic)/)?.[1] || 'arial';
+
+            document.querySelectorAll('.accessibility-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            document.querySelectorAll('.accessibility-section').forEach(section => {
+                const buttons = section.querySelectorAll('.accessibility-btn');
+                buttons.forEach(btn => {
+                    const onClick = btn.getAttribute('onclick');
+                    if (onClick) {
+                        if (onClick.includes("'normal')") && !isHighContrast) btn.classList.add('active');
+                        if (onClick.includes("'high')") && isHighContrast) btn.classList.add('active');
+                        if (onClick.includes(`'${fontSize}')`)) btn.classList.add('active');
+                        if (onClick.includes('false') && onClick.includes('NightMode') && !isNightMode) btn.classList.add('active');
+                        if (onClick.includes('true') && onClick.includes('NightMode') && isNightMode) btn.classList.add('active');
+                        if (onClick.includes('false') && onClick.includes('Grayscale') && !isGrayscale) btn.classList.add('active');
+                        if (onClick.includes('true') && onClick.includes('Grayscale') && isGrayscale) btn.classList.add('active');
+                        if (onClick.includes('false') && onClick.includes('ReadingGuide') && !readingGuideActive) btn.classList.add('active');
+                        if (onClick.includes('true') && onClick.includes('ReadingGuide') && readingGuideActive) btn.classList.add('active');
+                        if (onClick.includes(`'${fontFamily}')`)) btn.classList.add('active');
+                        if (onClick.includes('false') && onClick.includes('ScreenReader') && !screenReaderActive) btn.classList.add('active');
+                        if (onClick.includes('true') && onClick.includes('ScreenReader') && screenReaderActive) btn.classList.add('active');
+                    }
+                });
+            });
+        }
+
+        function showUserManagement() {
+            showPage('admin-page');
+            loadAdminData();
+            setTimeout(() => {
+                document.querySelector('.admin-section h3').scrollIntoView({ behavior: 'smooth' });
+            }, 100);
+        }
+
+        function showVinylManagement() {
+            showPage('admin-page');
+            loadAdminData();
+            setTimeout(() => {
+                document.querySelector('#vinyl-management').scrollIntoView({ behavior: 'smooth' });
+            }, 100);
+        }
+
+        function showAddVinyl() {
+            showPage('admin-page');
+            loadAdminData();
+            setTimeout(() => {
+                document.querySelector('#add-vinyl-form').scrollIntoView({ behavior: 'smooth' });
+            }, 100);
+        }
+
+        function openChangeImageModal(element) {
+            if (currentUser && currentUser.role === 'admin') {
+                currentImageElement = element.parentElement;
+                const currentBg = currentImageElement.style.backgroundImage;
+                if (currentBg && currentBg !== 'none') {
+                    document.getElementById('image-url').value = currentBg.replace(/url\(['"]?(.*?)['"]?\)/i, '$1');
+                }
+                document.getElementById('change-image-modal').classList.add('active');
+            }
+        }
+
+        function applyImageChange() {
+            const imageUrl = document.getElementById('image-url').value;
+            if (imageUrl) {
+                currentImageElement.style.backgroundImage = `url('${imageUrl}')`;
+                updateAllVinylImages(currentImageElement.style.backgroundImage);
+                showNotification('🖼️ Imagen actualizada correctamente');
+                closeModals();
+            } else {
+                showNotification('❌ Por favor ingresa una URL válida');
+            }
+        }
+
+        function updateAllVinylImages(newImageUrl) {
+            const allVinylElements = document.querySelectorAll('.album-cover, .vinyl-image');
+            const currentBg = currentImageElement.style.backgroundImage;
+
+            allVinylElements.forEach(element => {
+                if (element.style.backgroundImage === currentBg) {
+                    element.style.backgroundImage = newImageUrl;
+                }
+            });
+
+            allVinyls.forEach(vinyl => {
+                if (vinyl.image === currentBg.replace(/url\(['"]?(.*?)['"]?\)/i, '$1')) {
+                    vinyl.image = newImageUrl.replace(/url\(['"]?(.*?)['"]?\)/i, '$1');
+                }
+            });
+
+            localStorage.setItem('vinylVibesVinyls', JSON.stringify(allVinyls));
+        }
+
+        function initVoiceRecognition() {
+            if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+                const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                recognition = new SpeechRecognition();
+                recognition.continuous = false;
+                recognition.interimResults = false;
+                recognition.lang = 'es-ES';
+
+                recognition.onstart = function () {
+                    isRecording = true;
+                    document.getElementById('voice-btn').classList.add('recording');
+                    showNotification('🎤 Escuchando... Di el nombre del vinilo');
+                };
+
+                recognition.onresult = function (event) {
+                    const transcript = event.results[0][0].transcript;
+                    document.getElementById('header-search').value = transcript;
+                    searchFromHeader();
+                    showNotification(`🔍 Buscando: "${transcript}"`);
+                };
+
+                recognition.onerror = function (event) {
+                    showNotification('❌ Error en reconocimiento de voz');
+                    console.error('Speech recognition error:', event.error);
+                };
+
+                recognition.onend = function () {
+                    isRecording = false;
+                    document.getElementById('voice-btn').classList.remove('recording');
+                };
+            } else {
+                console.log('Speech recognition not supported');
+            }
+        }
+
+        function toggleVoiceSearch() {
+            if (!recognition) {
+                showNotification('❌ Reconocimiento de voz no disponible');
+                return;
+            }
+
+            if (isRecording) {
+                recognition.stop();
+            } else {
+                recognition.start();
+            }
+        }
+
+        function searchFromHeader() {
+            const searchTerm = document.getElementById('header-search').value.toLowerCase();
+
+            if (searchTerm.trim() === '') {
+                return;
+            }
+
+            const catalogPage = document.getElementById('catalog-page');
+            if (catalogPage.classList.contains('hidden')) {
+                showCatalog();
+                setTimeout(() => {
+                    performSearch(searchTerm);
+                }, 100);
+            } else {
+                performSearch(searchTerm);
+            }
+        }
+
+        function performSearch(searchTerm) {
+            document.getElementById('search-input').value = searchTerm;
+            filterVinyls();
+        }
+
+        function showLoginModal() {
+            closeModals();
+            setTimeout(() => {
+                document.getElementById('login-modal').classList.add('active');
+            }, 100);
+        }
+
+        function showRegisterModal() {
+            closeModals();
+            setTimeout(() => {
+                document.getElementById('register-modal').classList.add('active');
+            }, 100);
+        }
+
+        function showLoginModalFromRegister() {
+            closeModals();
+            setTimeout(() => {
+                document.getElementById('login-modal').classList.add('active');
+            }, 100);
+        }
+
+        function closeModals() {
+            const modals = ['login-modal', 'register-modal', 'change-image-modal', 'edit-user-modal', 'view-user-modal', 'edit-vinyl-modal'];
+            modals.forEach(modalId => {
+                document.getElementById(modalId).classList.remove('active');
+            });
+            document.getElementById('image-url').value = '';
+            currentEditingUserId = null;
+            currentEditingVinylId = null;
+        }
+
+        function showPage(pageId) {
+            const pages = ['home-page', 'catalog-page', 'cart-page', 'profile-page', 'admin-page'];
+            pages.forEach(page => {
+                document.getElementById(page).classList.add('hidden');
+            });
+            document.getElementById(pageId).classList.remove('hidden');
+        }
+
+        function showHome() {
+            showPage('home-page');
+            document.getElementById('header-search').value = '';
+        }
+
+        function showCatalog() {
+            showPage('catalog-page');
+            loadVinyls();
+        }
+
+        function showCart() {
+            if (currentUser && currentUser.role === 'admin') {
+                showNotification('🛠️ Los administradores no pueden usar el carrito');
+                return;
+            }
+            showPage('cart-page');
+            loadCart();
+        }
+
+        function showProfile() {
+            if (!currentUser) {
+                showNotification('Por favor inicia sesión primero');
+                showLoginModal();
+                return;
+            }
+            showPage('profile-page');
+            loadProfile();
+        }
+
+        function showAdmin() {
+            showPage('admin-page');
+            loadAdminData();
+        }
+
+        async function handleLogin(e) {
+            e.preventDefault();
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+
+            try {
+                const user = registeredUsers.find(u => u.email === email && u.password === password);
+
+                if (user) {
+                    currentUser = user;
+                    localStorage.setItem('vinylVibesCurrentUser', JSON.stringify(currentUser));
+                    updateUserInterface();
+                    closeModals();
+                    showNotification(`🎉 ¡Bienvenido, ${user.name}!`);
+
+                    if (user.role === 'admin') {
+                        showAdmin();
+                    } else {
+                        showHome();
+                    }
+                } else {
+                    showNotification('❌ Credenciales incorrectas');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showNotification('❌ Error en el inicio de sesión');
+            }
+        }
+
+        async function handleRegister(e) {
+            e.preventDefault();
+            const name = document.getElementById('register-name').value;
+            const email = document.getElementById('register-email').value;
+            const password = document.getElementById('register-password').value;
+            const confirm = document.getElementById('register-confirm').value;
+
+            if (password !== confirm) {
+                showNotification('❌ Las contraseñas no coinciden');
+                return;
+            }
+
+            try {
+                if (registeredUsers.find(u => u.email === email)) {
+                    showNotification('❌ Este email ya está registrado');
+                    return;
+                }
+
+                const newUser = {
+                    id: Math.max(...registeredUsers.map(u => u.id)) + 1,
+                    name: name,
+                    email: email,
+                    password: password,
+                    role: 'user',
+                    registerDate: new Date().toISOString().split('T')[0],
+                    notes: 'Usuario registrado manualmente'
+                };
+
+                registeredUsers.push(newUser);
+                localStorage.setItem('vinylVibesUsers', JSON.stringify(registeredUsers));
+
+                currentUser = newUser;
+                localStorage.setItem('vinylVibesCurrentUser', JSON.stringify(currentUser));
+
+                updateUserInterface();
+                closeModals();
+                showNotification(`🎉 ¡Registro exitoso! Bienvenido, ${name}!`);
+                showHome();
+            } catch (error) {
+                console.error('Error:', error);
+                showNotification('❌ Error en el registro');
+            }
+        }
+
+        async function logout() {
+            currentUser = null;
+            cart = [];
+            localStorage.removeItem('vinylVibesCurrentUser');
+            localStorage.setItem('vinylVibesCart', JSON.stringify(cart));
+            updateUserInterface();
+            updateCartCount();
+            showNotification('👋 Sesión cerrada exitosamente');
+            showHome();
+        }
+
+        async function loadVinyls() {
+            try {
+                const savedVinyls = localStorage.getItem('vinylVibesVinyls');
+                if (savedVinyls) {
+                    allVinyls = JSON.parse(savedVinyls);
+                }
+                displayVinyls(allVinyls);
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        function displayVinyls(vinyls) {
+            const grid = document.getElementById('vinyl-grid');
+            grid.innerHTML = '';
+
+            vinyls.forEach(vinyl => {
+                const card = createVinylCard(vinyl);
+                grid.appendChild(card);
+            });
+        }
+
+        function createVinylCard(vinyl) {
+            const card = document.createElement('div');
+            card.className = 'vinyl-card';
+            card.innerHTML = `
+                <div class="vinyl-image" style="background-image: url('${vinyl.image || 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400&h=400'}');">
+                    ${currentUser && currentUser.role === 'admin' ?
+                    `<button class="change-image-btn" onclick="openChangeImageModal(this)">🖼️</button>` :
+                    ''}
+                </div>
+                <div class="vinyl-info">
+                    <h3>${vinyl.title}</h3>
+                    <p class="vinyl-artist">👨‍🎤 ${vinyl.artist}</p>
+                    <p class="vinyl-price">💰 ${vinyl.price} MXN</p>
+                    <p class="vinyl-stock">📦 Stock: ${vinyl.stock}</p>
+                </div>
+                ${currentUser && currentUser.role !== 'admin' ?
+                    `<button class="add-to-cart" onclick="addToCart(${vinyl.id})" ${vinyl.stock === 0 ? 'disabled' : ''}>
+                        ${vinyl.stock === 0 ? '😔 Agotado' : '🛒 Agregar al Carrito'}
+                    </button>` :
+                    ''}
+            `;
+            return card;
+        }
+
+        function filterVinyls() {
+            const searchTerm = document.getElementById('search-input').value.toLowerCase();
+            const genreFilter = document.getElementById('genre-filter').value;
+
+            const filteredVinyls = allVinyls.filter(vinyl => {
+                const matchesSearch = vinyl.title.toLowerCase().includes(searchTerm) ||
+                    vinyl.artist.toLowerCase().includes(searchTerm);
+                const matchesGenre = !genreFilter || vinyl.genre === genreFilter;
+                return matchesSearch && matchesGenre;
+            });
+
+            displayVinyls(filteredVinyls);
+        }
+
+        function addToCart(vinylId) {
+            if (!currentUser) {
+                showNotification('🔐 Por favor inicia sesión para agregar al carrito');
+                showLoginModal();
+                return;
+            }
+
+            if (currentUser.role === 'admin') {
+                showNotification('🛠️ Los administradores no pueden usar el carrito');
+                return;
+            }
+
+            const vinyl = allVinyls.find(v => v.id === vinylId);
+            if (!vinyl || vinyl.stock === 0) {
+                showNotification('❌ Producto no disponible');
+                return;
+            }
+
+            const existingItem = cart.find(item => item.id === vinylId);
+            if (existingItem) {
+                if (existingItem.quantity < vinyl.stock) {
+                    existingItem.quantity++;
+                    showNotification('✅ Cantidad actualizada en el carrito');
+                } else {
+                    showNotification('❌ Stock insuficiente');
+                    return;
+                }
+            } else {
+                cart.push({
+                    id: vinylId,
+                    title: vinyl.title,
+                    artist: vinyl.artist,
+                    price: vinyl.price,
+                    quantity: 1,
+                    image: vinyl.image
+                });
+                showNotification('🎉 Producto agregado al carrito');
+            }
+
+            localStorage.setItem('vinylVibesCart', JSON.stringify(cart));
+            updateCartCount();
+        }
+
+        function addToCartFromFeatured(vinylId) {
+            addToCart(vinylId);
+        }
+
+        function removeFromCart(vinylId) {
+            cart = cart.filter(item => item.id !== vinylId);
+            localStorage.setItem('vinylVibesCart', JSON.stringify(cart));
+            updateCartCount();
+            loadCart();
+            showNotification('🗑️ Producto eliminado del carrito');
+        }
+
+        function updateQuantity(vinylId, change) {
+            const item = cart.find(item => item.id === vinylId);
+            const vinyl = allVinyls.find(v => v.id === vinylId);
+
+            if (item) {
+                const newQuantity = item.quantity + change;
+                if (newQuantity <= 0) {
+                    removeFromCart(vinylId);
+                } else if (newQuantity <= vinyl.stock) {
+                    item.quantity = newQuantity;
+                    localStorage.setItem('vinylVibesCart', JSON.stringify(cart));
+                    updateCartCount();
+                    loadCart();
+                } else {
+                    showNotification('❌ Stock insuficiente');
+                }
+            }
+        }
+
+        function updateCartCount() {
+            const count = cart.reduce((total, item) => total + item.quantity, 0);
+            document.getElementById('cart-count').textContent = count;
+        }
+
+        function loadCart() {
+            const cartContainer = document.getElementById('cart-items');
+            const totalElement = document.getElementById('cart-total');
+
+            if (cart.length === 0) {
+                cartContainer.innerHTML = '<p style="text-align: center; opacity: 0.7; font-size: 1.2rem;">🛒 Tu carrito está vacío</p>';
+                totalElement.textContent = '0';
+                return;
+            }
+
+            cartContainer.innerHTML = '';
+            let total = 0;
+
+            cart.forEach(item => {
+                total += item.price * item.quantity;
+
+                const cartItem = document.createElement('div');
+                cartItem.className = 'cart-item';
+                cartItem.innerHTML = `
+                    <div class="cart-item-image" style="background-image: url('${item.image || 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400&h=400'}');"></div>
+                    <div class="cart-item-info">
+                        <h4>${item.title}</h4>
+                        <p>👨‍🎤 ${item.artist}</p>
+                        <div class="quantity-controls">
+                            <button class="quantity-btn" onclick="updateQuantity(${item.id}, -1)">-</button>
+                            <span style="margin: 0 1rem;">Cantidad: ${item.quantity}</span>
+                            <button class="quantity-btn" onclick="updateQuantity(${item.id}, 1)">+</button>
+                        </div>
+                        <p class="vinyl-price">💰 ${item.price * item.quantity} MXN</p>
+                    </div>
+                    <button class="btn btn-secondary" onclick="removeFromCart(${item.id})">🗑️ Eliminar</button>
+                `;
+                cartContainer.appendChild(cartItem);
+            });
+
+            totalElement.textContent = total;
+        }
+
+        async function checkout() {
+            if (!currentUser) {
+                showNotification('🔐 Por favor inicia sesión para continuar');
+                showLoginModal();
+                return;
+            }
+
+            if (currentUser.role === 'admin') {
+                showNotification('🛠️ Los administradores no pueden realizar compras');
+                return;
+            }
+
+            if (cart.length === 0) {
+                showNotification('🛒 Tu carrito está vacío');
+                return;
+            }
+
+            try {
+                cart.forEach(cartItem => {
+                    const vinyl = allVinyls.find(v => v.id === cartItem.id);
+                    if (vinyl) {
+                        vinyl.stock -= cartItem.quantity;
+                    }
+                });
+
+                localStorage.setItem('vinylVibesVinyls', JSON.stringify(allVinyls));
+
+                cart = [];
+                localStorage.setItem('vinylVibesCart', JSON.stringify(cart));
+                updateCartCount();
+                loadCart();
+                showNotification('🎉 ¡Pedido realizado exitosamente! Recibirás un email de confirmación.');
+                loadVinyls();
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        function loadProfile() {
+            const profileContainer = document.getElementById('user-profile');
+
+            profileContainer.innerHTML = `
+                <div style="text-align: center; margin-bottom: 2rem;">
+                    <h3 style="color: var(--primary-color); margin-bottom: 1rem;">📋 Información Personal</h3>
+                    <div style="background: var(--card-bg); padding: 1.5rem; border-radius: 15px; margin-bottom: 1rem;">
+                        <p style="margin-bottom: 0.5rem;"><strong>👤 Nombre:</strong> ${currentUser.name}</p>
+                        <p style="margin-bottom: 0.5rem;"><strong>📧 Email:</strong> ${currentUser.email || 'No disponible'}</p>
+                        <p><strong>🏷️ Tipo de cuenta:</strong> ${currentUser.role === 'admin' ? '👑 Administrador' : '👤 Usuario'}</p>
+                    </div>
+                </div>
+                
+                <h3 style="color: var(--primary-color); margin-bottom: 1rem;">📦 Historial de Pedidos</h3>
+                <div id="user-orders" style="background: var(--card-bg); padding: 1.5rem; border-radius: 15px;">
+                    <p style="opacity: 0.7; text-align: center;">📋 No hay pedidos anteriores</p>
+                </div>
+            `;
+        }
+
+        async function loadAdminData() {
+            document.getElementById('total-users').textContent = registeredUsers.length;
+            document.getElementById('total-vinyls').textContent = allVinyls.length;
+            document.getElementById('total-sales').textContent = '89';
+
+            loadUsersTable();
+            loadAdminVinylsList();
+        }
+
+        function loadUsersTable() {
+            const usersTableBody = document.getElementById('users-table-body');
+            usersTableBody.innerHTML = '';
+
+            registeredUsers.forEach(user => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${user.id}</td>
+                    <td>${user.name}</td>
+                    <td>${user.email}</td>
+                    <td>${user.role === 'admin' ? 'Administrador' : 'Usuario'}</td>
+                    <td>${user.registerDate}</td>
+                    <td>
+                        <button class="admin-action-btn view-btn" onclick="viewUser(${user.id})">👁️ Ver</button>
+                        <button class="admin-action-btn edit-btn" onclick="editUser(${user.id})">✏️ Editar</button>
+                        <button class="admin-action-btn delete-btn" onclick="deleteUser(${user.id})" ${user.role === 'admin' ? 'disabled' : ''}>🗑️ Eliminar</button>
+                    </td>
+                `;
+                usersTableBody.appendChild(row);
+            });
+        }
+
+        function loadAdminVinylsList() {
+            const adminVinylsList = document.getElementById('admin-vinyls-list');
+            adminVinylsList.innerHTML = '';
+
+            allVinyls.forEach(vinyl => {
+                const vinylItem = document.createElement('div');
+                vinylItem.className = 'vinyl-item';
+                vinylItem.style.cssText = 'display: flex; justify-content: space-between; align-items: center; padding: 1rem; border-bottom: 1px solid rgba(255, 182, 193, 0.3);';
+
+                vinylItem.innerHTML = `
+                    <div style="flex: 1;">
+                        <strong>${vinyl.title}</strong> - ${vinyl.artist}
+                        <div style="font-size: 0.9rem; opacity: 0.7;">
+                            ${vinyl.genre} | ${vinyl.price} | Stock: ${vinyl.stock} | Año: ${vinyl.year || 'N/A'}
+                        </div>
+                    </div>
+                    <div>
+                        <button class="admin-action-btn edit-btn" onclick="editVinyl(${vinyl.id})">✏️ Editar</button>
+                        <button class="admin-action-btn delete-btn" onclick="deleteVinyl(${vinyl.id})">🗑️ Eliminar</button>
+                    </div>
+                `;
+
+                adminVinylsList.appendChild(vinylItem);
+            });
+        }
+
+        function viewUser(userId) {
+            const user = registeredUsers.find(u => u.id === userId);
+            if (user) {
+                const userDetails = document.getElementById('user-details-content');
+                userDetails.innerHTML = `
+                    <div style="background: var(--card-bg); padding: 1.5rem; border-radius: 15px;">
+                        <h3 style="color: var(--primary-color); margin-bottom: 1rem;">Información del Usuario</h3>
+                        <div style="display: grid; gap: 1rem;">
+                            <div><strong>ID:</strong> ${user.id}</div>
+                            <div><strong>Nombre:</strong> ${user.name}</div>
+                            <div><strong>Email:</strong> ${user.email}</div>
+                            <div><strong>Rol:</strong> ${user.role === 'admin' ? 'Administrador' : 'Usuario'}</div>
+                            <div><strong>Fecha de Registro:</strong> ${user.registerDate}</div>
+                            <div><strong>Notas:</strong> ${user.notes || 'Sin notas'}</div>
+                        </div>
+                        <div style="margin-top: 1rem; text-align: center;">
+                            <button class="btn" onclick="editUser(${user.id}); closeModals();">Editar Usuario</button>
+                        </div>
+                    </div>
+                `;
+                document.getElementById('view-user-modal').classList.add('active');
+            }
+        }
+
+        function editUser(userId) {
+            const user = registeredUsers.find(u => u.id === userId);
+            if (user) {
+                currentEditingUserId = userId;
+                document.getElementById('edit-user-name').value = user.name;
+                document.getElementById('edit-user-email').value = user.email;
+                document.getElementById('edit-user-role').value = user.role;
+                document.getElementById('edit-user-date').value = user.registerDate;
+                document.getElementById('edit-user-notes').value = user.notes || '';
+                document.getElementById('edit-user-modal').classList.add('active');
+            }
+        }
+
+        function deleteUser(userId) {
+            const user = registeredUsers.find(u => u.id === userId);
+            if (user && user.role !== 'admin') {
+                if (confirm(`¿Estás seguro de que quieres eliminar al usuario "${user.name}"?`)) {
+                    registeredUsers = registeredUsers.filter(u => u.id !== userId);
+                    localStorage.setItem('vinylVibesUsers', JSON.stringify(registeredUsers));
+                    loadUsersTable();
+                    loadAdminData();
+                    showNotification('✅ Usuario eliminado correctamente');
+                }
+            } else {
+                showNotification('❌ No se puede eliminar un administrador');
+            }
+        }
+
+        async function handleEditUser(e) {
+            e.preventDefault();
+            if (!currentEditingUserId) return;
+
+            const name = document.getElementById('edit-user-name').value;
+            const email = document.getElementById('edit-user-email').value;
+            const role = document.getElementById('edit-user-role').value;
+            const registerDate = document.getElementById('edit-user-date').value;
+            const notes = document.getElementById('edit-user-notes').value;
+
+            try {
+                const userIndex = registeredUsers.findIndex(u => u.id === currentEditingUserId);
+                if (userIndex !== -1) {
+                    registeredUsers[userIndex] = {
+                        ...registeredUsers[userIndex],
+                        name: name,
+                        email: email,
+                        role: role,
+                        registerDate: registerDate,
+                        notes: notes
+                    };
+
+                    localStorage.setItem('vinylVibesUsers', JSON.stringify(registeredUsers));
+                    loadUsersTable();
+                    closeModals();
+                    showNotification('✅ Usuario actualizado correctamente');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showNotification('❌ Error al actualizar usuario');
+            }
+        }
+
+        function editVinyl(vinylId) {
+            const vinyl = allVinyls.find(v => v.id === vinylId);
+            if (vinyl) {
+                currentEditingVinylId = vinylId;
+                document.getElementById('edit-vinyl-title').value = vinyl.title;
+                document.getElementById('edit-vinyl-artist').value = vinyl.artist;
+                document.getElementById('edit-vinyl-genre').value = vinyl.genre;
+                document.getElementById('edit-vinyl-price').value = vinyl.price;
+                document.getElementById('edit-vinyl-stock').value = vinyl.stock;
+                document.getElementById('edit-vinyl-year').value = vinyl.year || '';
+                document.getElementById('edit-vinyl-image-url').value = vinyl.image || '';
+                document.getElementById('edit-vinyl-description').value = vinyl.description || '';
+                document.getElementById('edit-vinyl-modal').classList.add('active');
+            }
+        }
+
+        function deleteVinyl(vinylId) {
+            const vinyl = allVinyls.find(v => v.id === vinylId);
+            if (vinyl) {
+                if (confirm(`¿Estás seguro de que quieres eliminar el vinilo "${vinyl.title}"?`)) {
+                    allVinyls = allVinyls.filter(v => v.id !== vinylId);
+                    localStorage.setItem('vinylVibesVinyls', JSON.stringify(allVinyls));
+                    loadAdminVinylsList();
+                    loadAdminData();
+                    displayVinyls(allVinyls);
+                    showNotification('✅ Vinilo eliminado correctamente');
+                }
+            }
+        }
+
+        async function handleEditVinyl(e) {
+            e.preventDefault();
+            if (!currentEditingVinylId) return;
+
+            const title = document.getElementById('edit-vinyl-title').value;
+            const artist = document.getElementById('edit-vinyl-artist').value;
+            const genre = document.getElementById('edit-vinyl-genre').value;
+            const price = parseFloat(document.getElementById('edit-vinyl-price').value);
+            const stock = parseInt(document.getElementById('edit-vinyl-stock').value);
+            const year = parseInt(document.getElementById('edit-vinyl-year').value);
+            const imageUrl = document.getElementById('edit-vinyl-image-url').value;
+            const description = document.getElementById('edit-vinyl-description').value;
+
+            if (!title || !artist || !genre || !price || isNaN(stock)) {
+                showNotification('❌ Por favor completa todos los campos requeridos');
+                return;
+            }
+
+            try {
+                const vinylIndex = allVinyls.findIndex(v => v.id === currentEditingVinylId);
+                if (vinylIndex !== -1) {
+                    allVinyls[vinylIndex] = {
+                        ...allVinyls[vinylIndex],
+                        title: title,
+                        artist: artist,
+                        genre: genre,
+                        price: price,
+                        stock: stock,
+                        year: year || null,
+                        image: imageUrl || allVinyls[vinylIndex].image,
+                        description: description || ''
+                    };
+
+                    localStorage.setItem('vinylVibesVinyls', JSON.stringify(allVinyls));
+
+                    loadAdminVinylsList();
+                    displayVinyls(allVinyls);
+                    closeModals();
+                    showNotification('✅ Vinilo actualizado correctamente');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showNotification('❌ Error al actualizar vinilo');
+            }
+        }
+
+        async function handleAddVinyl(e) {
+            e.preventDefault();
+
+            const title = document.getElementById('vinyl-title').value;
+            const artist = document.getElementById('vinyl-artist').value;
+            const genre = document.getElementById('vinyl-genre').value;
+            const price = parseFloat(document.getElementById('vinyl-price').value);
+            const stock = parseInt(document.getElementById('vinyl-stock').value);
+            const year = parseInt(document.getElementById('vinyl-year').value);
+            const imageUrl = document.getElementById('vinyl-image-url').value;
+            const description = document.getElementById('vinyl-description').value;
+
+            if (!title || !artist || !genre || !price || isNaN(stock)) {
+                showNotification('❌ Por favor completa todos los campos requeridos');
+                return;
+            }
+
+            try {
+                const newVinyl = {
+                    id: Math.max(...allVinyls.map(v => v.id)) + 1,
+                    title: title,
+                    artist: artist,
+                    genre: genre,
+                    price: price,
+                    stock: stock,
+                    year: year || null,
+                    image: imageUrl || 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400&h=400',
+                    description: description || ''
+                };
+
+                allVinyls.push(newVinyl);
+                localStorage.setItem('vinylVibesVinyls', JSON.stringify(allVinyls));
+
+                document.getElementById('add-vinyl-form').reset();
+                showNotification('🎉 Vinilo agregado exitosamente');
+                loadAdminVinylsList();
+                loadAdminData();
+                displayVinyls(allVinyls);
+            } catch (error) {
+                console.error('Error:', error);
+                showNotification('❌ Error al agregar vinilo');
+            }
+        }
+
+        function updateUserInterface() {
+            const userNameSpan = document.getElementById('user-name');
+            const loginBtn = document.getElementById('login-btn');
+            const logoutBtn = document.getElementById('logout-btn');
+            const adminNav = document.getElementById('admin-nav');
+            const regularNav = document.getElementById('regular-nav');
+            const cartSection = document.getElementById('cart-section');
+            const adminOnlyElements = document.querySelectorAll('.admin-only');
+
+            if (currentUser) {
+                userNameSpan.textContent = `🎉 Hola, ${currentUser.name}`;
+                userNameSpan.classList.remove('hidden');
+                loginBtn.classList.add('hidden');
+                logoutBtn.classList.remove('hidden');
+
+                if (currentUser.role === 'admin') {
+                    adminNav.classList.add('show');
+                    regularNav.style.display = 'none';
+                    cartSection.style.display = 'none';
+
+                    adminOnlyElements.forEach(element => {
+                        element.classList.remove('hidden');
+                    });
+                } else {
+                    adminNav.classList.remove('show');
+                    regularNav.style.display = 'flex';
+                    cartSection.style.display = 'block';
+
+                    adminOnlyElements.forEach(element => {
+                        element.classList.add('hidden');
+                    });
+                }
+            } else {
+                userNameSpan.classList.add('hidden');
+                loginBtn.classList.remove('hidden');
+                logoutBtn.classList.add('hidden');
+                adminNav.classList.remove('show');
+                regularNav.style.display = 'flex';
+                cartSection.style.display = 'block';
+
+                adminOnlyElements.forEach(element => {
+                    element.classList.add('hidden');
+                });
+            }
+
+            if (!document.getElementById('catalog-page').classList.contains('hidden')) {
+                displayVinyls(allVinyls);
+            }
+        }
+
+        function showNotification(message) {
+            const notification = document.getElementById('notification');
+            const text = document.getElementById('notification-text');
+
+            text.textContent = message;
+            notification.classList.add('show');
+
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 5000);
+        }
+
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape') {
+                closeModals();
+            }
+
+            if (e.ctrlKey && e.key === 'k') {
+                e.preventDefault();
+                const searchInput = document.getElementById('header-search');
+                if (searchInput) {
+                    searchInput.focus();
+                }
+            }
+
+            if (e.ctrlKey && e.key === 'm') {
+                e.preventDefault();
+                toggleVoiceSearch();
+            }
+
+            if (e.ctrlKey && e.key === 'a') {
+                e.preventDefault();
+                toggleAccessibilityPanel();
+            }
+
+            if (e.ctrlKey && e.key === 'n') {
+                e.preventDefault();
+                toggleNightModeFromButton();
+            }
+        });
+
+        document.addEventListener('click', function (e) {
+            if (e.target.classList.contains('btn')) {
+                e.target.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    e.target.style.transform = '';
+                }, 150);
+            }
+        });
+
+        document.getElementById('header-search').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                searchFromHeader();
+            }
+        });
+    </script>
+</body>
+
+</html>
