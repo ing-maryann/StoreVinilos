@@ -26,7 +26,7 @@
             --grayscale-mode: false;
         }
 
-        /* Modo de alto contraste */
+        
         body.high-contrast {
             --primary-color: #000000;
             --secondary-color: #000000;
@@ -36,7 +36,7 @@
             --card-bg: #ffffff;
         }
 
-        /* Modo nocturno */
+        
         body.night-mode {
             --primary-color: #BB86FC;
             --secondary-color: #03DAC6;
@@ -46,12 +46,12 @@
             --card-bg: rgba(30, 30, 30, 0.8);
         }
 
-        /* Modo escala de grises */
+       
         body.grayscale {
             filter: grayscale(100%);
         }
 
-        /* Tamaños de fuente */
+        
         body.font-small {
             --font-size: 14px;
         }
@@ -68,7 +68,7 @@
             --font-size: 20px;
         }
 
-        /* Tipografías */
+        
         body.font-arial {
             --font-family: 'Arial', sans-serif;
         }
@@ -101,12 +101,12 @@
             background-color: var(--background-color);
         }
 
-        /* Aplicar modo nocturno al fondo */
+        
         body.night-mode {
             background: linear-gradient(135deg, #1a1a2e 0%, #16213e 25%, #0f3460 50%, #1a1a2e 75%, #16213e 100%);
         }
 
-        /* Background Image Overlay - Única imagen de fondo */
+        
         .bg-image {
             position: fixed;
             top: 0;
@@ -121,7 +121,7 @@
             z-index: -2;
         }
 
-        /* Ajustar opacidad en modo nocturno */
+       
         body.night-mode .bg-image {
             opacity: 0.05;
         }
@@ -168,7 +168,7 @@
             }
         }
 
-        /* Botón de Accesibilidad Flotante */
+       
         .accessibility-toggle-btn {
             position: fixed;
             bottom: 20px;
@@ -1511,7 +1511,7 @@
 
         <div class="accessibility-section">
             <h4>
-                🔠 Tamaño de Fuente
+                 Tamaño de Fuente
                 <span class="current-setting" id="fontsize-status">Mediana</span>
             </h4>
             <div class="accessibility-btn-group">
@@ -1557,7 +1557,7 @@
 
         <div class="accessibility-section">
             <h4>
-                🔤 Tipografía
+                 Tipografía
                 <span class="current-setting" id="font-status">Arial</span>
             </h4>
             <div class="accessibility-btn-group">
@@ -1595,7 +1595,7 @@
         </ul>
 
         <ul class="admin-nav-links" id="admin-nav">
-            <li><a href="#" onclick="showUserManagement()">👥 Gestionar Usuarios</a></li>
+            <li><a href="#" onclick="showUserManagement()"> Gestionar Usuarios</a></li>
             <li><a href="#" onclick="showVinylManagement()">🎵 Gestionar Vinilos</a></li>
             <li><a href="#" onclick="showAddVinyl()">➕ Agregar Vinilo</a></li>
         </ul>
@@ -1852,7 +1852,7 @@
             <div class="features">
                 <div class="feature-card" onclick="showCatalog()">
                     <h3>🎵 Catálogo Completo</h3>
-                    <p>Miles de vinilos de todos los géneros y épocas. Desde clásicos hasta lanzamientos recientes.</p>
+                    <p>Explora una colección única con miles de vinilos que abarcan todos los géneros musicales y épocas. Desde los clásicos atemporales como rock,jazz y pop.</p>
                 </div>
                 <div class="feature-card" onclick="showLoginModal()">
                     <h3>👤 Perfil Personal</h3>
